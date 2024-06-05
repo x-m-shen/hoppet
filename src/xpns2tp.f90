@@ -34,6 +34,7 @@ module xpns2tp
   !    exact, the rest has been fitted for x between 10^-6 and 1 - 10^-6.
   !    The N_f^2 part is exact is identical to the spacelike case.
   !
+contains
   double precision FUNCTION P2NSPTA (Y, NF)
     IMPLICIT REAL*8 (A - Z)
     INTEGER NF

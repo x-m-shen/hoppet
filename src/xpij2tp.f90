@@ -29,16 +29,22 @@
 !               arXiv:1107.nnnn                            
 !                           
 module xpij2tp
-  public::p2psta,  P2NSMTA, P2QGTA, P2GQTA, P2QQTA, P2GGTA, P2GGTB, P2GGTC
+  public::p2psta, P2QGTA, P2GQTA, P2QQTA, P2GGTA, P2GGTB, P2GGTC
   ! =====================================================================
   !
   ! ..The (regular) pure-singlet splitting functions P_ps^(2)T.
   !    P_qq^(2)T is obtained by adding the non-singlet quantity P_NS+^(2)T
   !    A parametrization of the latter is provided in the file  xpns2pt.f.
   !
+
+contains
   double precision FUNCTION P2PSTA (Y, NF)
-    !
     IMPLICIT REAL*8 (A-Z)
+    ! implicit none
+    ! double precision ::y
+    ! double precision :: dl, dl1,
+    ! double precision :: p2pst1, p2pst2, p2psta
+
     INTEGER NF
 
     DL  = log(Y)
