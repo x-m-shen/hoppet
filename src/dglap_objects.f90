@@ -20,6 +20,7 @@
 !!
 !======================================================================
 module dglap_objects
+  use splitting_functions_nnlo_tl ! new
   use types; use consts_dp; use splitting_functions
   !use qcd
   use dglap_choices
@@ -96,6 +97,9 @@ module dglap_objects
   public :: InitSplitMatNNLO
   public :: InitSplitMatTimeNLO
   public :: InitSplitMatPolLO, InitSplitMatPolNLO
+
+  ! new
+  public :: InitSplitMatTimeNNLO, InitSplitMatTimeNNLO2
 
   public :: InitSplitMat!, Delete_sm
   !public :: AddWithCoeff_sm, Multiply_sm
@@ -1115,5 +1119,63 @@ contains
     call cobj_DelCoeff (C2L)
   end function cobj_Eval2LConv
     
+  ! new
+  !======================================================================
+  !! Initialise a NNLO unpolarised splitting matrix, with the nf value that
+  !! is current from the qcd module. (MSbar scheme)
+  subroutine InitSplitMatTimeNNLO(grid, P)
+    use qcd; use convolution_communicator
+    type(grid_def),    intent(in)    :: grid
+    type(split_mat),   intent(inout) :: P
+    !-----------------------------------------
+    type(grid_conv) :: P2NSS
+    real(dp) :: dummy
+
+    write (*,*) "calling InitSplitMatTimeNNLO"
+    !-- info to describe the splitting function
+    !P%loops = 3
+
+    P%nf_int = nf_int
+
+    call cobj_InitSplitLinks(P)
+
+    call InitGridConv(grid, P%NS_plus, p2tnsp)
+    call InitGridConv(grid, P%NS_minus, p2tnsm)
+    call InitGridConv(grid, P%NS_V, p2tnsv)
+
+    call InitGridConv(grid, P%qg, p2tqg)
+    call InitGridConv(grid, P%gg, p2tgg)
+    call InitGridConv(grid, P%gq, p2tgq_cyzz)
+    call InitGridConv(grid, P%qq, p2tqq)
+
+  end subroutine InitSplitMatTimeNNLO
+
+  subroutine InitSplitMatTimeNNLO2(grid, P)
+    use qcd; use convolution_communicator
+    type(grid_def),    intent(in)    :: grid
+    type(split_mat),   intent(inout) :: P
+    !-----------------------------------------
+    type(grid_conv) :: P2NSS
+    real(dp) :: dummy
+
+    write (*,*) "calling InitSplitMatTimeNNLO2. (w/o corr. from H.X.Zhu et al.)"
+    !-- info to describe the splitting function
+    !P%loops = 3
+
+    P%nf_int = nf_int
+
+    call cobj_InitSplitLinks(P)
+
+    call InitGridConv(grid, P%NS_plus, p2tnsp)
+    call InitGridConv(grid, P%NS_minus, p2tnsm)
+    call InitGridConv(grid, P%NS_V, p2tnsv)
+
+    call InitGridConv(grid, P%qg, p2tqg)
+    call InitGridConv(grid, P%gg, p2tgg)
+    call InitGridConv(grid, P%gq, p2tgq)
+    call InitGridConv(grid, P%qq, p2tqq)
+
+  end subroutine InitSplitMatTimeNNLO2
+
 end module dglap_objects
 !end module dglap_objects_hidden

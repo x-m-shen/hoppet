@@ -279,8 +279,9 @@ contains
                &'nloop >= 3 not supported for polarized case')
 
        case (factscheme_FragMSbar)
-          if (dh%nloop >= 3) call wae_error('InitDglapHolder',&
-               &'nloop >= 3 not supported for fragmentation case')
+          ! modified
+          if (dh%nloop >= 4) call wae_error('InitDglapHolder',&
+               &'nloop >= 4 not supported for fragmentation case')
 
           ! recall that equations for timelike evolution (fragmentation
           ! functions) are different from those for the spacelike case,
@@ -309,6 +310,14 @@ contains
              call wae_warn(nfragwarn, &
                   & 'DANGER: nloop=2 fragmentation flavour thresholds not implemented')
           end if
+
+          ! new
+          if (dh%nloop >= 3) then
+             call InitSplitMatTimeNNLO (grid, dh%P_NNLO)
+             call wae_warn(nfragwarn, &
+                  & 'DANGER: nloop=3 fragmentation flavour thresholds not implemented')
+          end if
+          ! end new
           
        case default
           write(0,*) 'factorisation scheme ',dh%factscheme,&
